@@ -222,14 +222,18 @@ export const ProfilePage = ({ userRole = 'student' }) => {
         <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl -mt-16 mb-8 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-end gap-6">
             {/* Avatar */}
-            <div className="relative -mt-20 sm:-mt-24 flex-shrink-0">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-br from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-2xl border-4 border-white dark:border-gray-700 shadow-lg flex items-center justify-center">
-                <span className="text-3xl sm:text-4xl font-bold text-white">{profile.initials}</span>
-              </div>
-              <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-gray-700 dark:bg-gray-600 rounded-full flex items-center justify-center shadow-md hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors">
-                <Camera className="w-4 h-4 text-white" />
-              </button>
-            </div>
+            <div className="relative flex-shrink-0 self-start sm:self-end">
+  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-2xl border-4 border-white dark:border-gray-700 shadow-lg flex items-center justify-center">
+    <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{profile.initials}</span>
+  </div>
+  {/* Camera button - repositioned */}
+  <button 
+    className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-gray-700 dark:bg-gray-600 rounded-full flex items-center justify-center shadow-md hover:bg-gray-600 dark:hover:bg-gray-500 transition-colors border-2 border-white dark:border-gray-700"
+    style={{ transform: 'translate(10%, 10%)' }}
+  >
+    <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+  </button>
+</div>
 
             {/* Identity */}
             <div className="flex-1 pb-1">
@@ -596,167 +600,167 @@ export const ProfilePage = ({ userRole = 'student' }) => {
           </TabsContent>
 
           {/* ── APPLICATIONS TAB ─────────────────────────────────────────── */}
-          {isStudent && (
-            <TabsContent value="applications">
-              <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <FileText className="w-5 h-5 text-gray-500 dark:text-gray-400" /> All Applications
-                    </CardTitle>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{studentProfile.applications.length} total</span>
+{isStudent && (
+  <TabsContent value="applications" className="mb-8">  {/* 👈 Added bottom margin */}
+    <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base flex items-center gap-2">
+            <FileText className="w-5 h-5 text-gray-500 dark:text-gray-400" /> All Applications
+          </CardTitle>
+          <span className="text-sm text-gray-500 dark:text-gray-400">{studentProfile.applications.length} total</span>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {studentProfile.applications.map((app, i) => {
+            const s = getStatusStyle(app.status);
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.07 }}
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors gap-3"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg shadow-sm flex items-center justify-center text-gray-700 dark:text-gray-300 font-bold text-sm border border-gray-200 dark:border-gray-600">
+                    {app.company.slice(0, 2).toUpperCase()}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {studentProfile.applications.map((app, i) => {
-                      const s = getStatusStyle(app.status);
-                      return (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.07 }}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors gap-3"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg shadow-sm flex items-center justify-center text-gray-700 dark:text-gray-300 font-bold text-sm border border-gray-200 dark:border-gray-600">
-                              {app.company.slice(0, 2).toUpperCase()}
-                            </div>
-                            <div>
-                              <h4 className="font-semibold text-gray-800 dark:text-gray-200">{app.role}</h4>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">{app.company} · {app.type}</p>
-                              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Applied: {app.date}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3 flex-shrink-0">
-                            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">{app.stipend}</span>
-                            <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${s.bg}`}>
-                              {s.icon} {s.label}
-                            </span>
-                            <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
-                              <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                            </button>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
+                  <div>
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-200">{app.role}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{app.company} · {app.type}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Applied: {app.date}</p>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">{app.stipend}</span>
+                  <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${s.bg}`}>
+                    {s.icon} {s.label}
+                  </span>
+                  <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+)}
 
           {/* ── SKILLS & RESUME TAB ──────────────────────────────────────── */}
-          {(userRole === 'student' || userRole === 'alumni') && (
-            <TabsContent value="skills">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Skills */}
-                {profile.skills && (
-                  <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Code className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Skills & Proficiency
-                        </CardTitle>
-                        {editMode && (
-                          <button className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-                            <Plus className="w-4 h-4" /> Add Skill
-                          </button>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {profile.skills.map((skill, i) => (
-                        <div key={i}>
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center gap-2 text-sm">
-                              <span className="w-5 h-5 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center text-gray-500 dark:text-gray-400">
-                                {skillCategoryIcon(skill.category)}
-                              </span>
-                              <span className="font-medium text-gray-700 dark:text-gray-300">{skill.name}</span>
-                              <span className="text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">{skill.category}</span>
-                            </div>
-                            <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">{skill.level}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <motion.div
-                              className="h-full bg-gradient-to-r from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${skill.level}%` }}
-                              transition={{ delay: i * 0.05, duration: 0.6 }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Resume & Documents */}
-                {isStudent && (
-                  <div className="space-y-6">
-                    <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <FileText className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Resume / CV
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center hover:border-gray-400 dark:hover:border-gray-600 transition-colors group cursor-pointer">
-                          <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-200 dark:group-hover:bg-gray-600 transition-colors">
-                            <Upload className="w-6 h-6 text-gray-500 dark:text-gray-400" />
-                          </div>
-                          <p className="text-gray-700 dark:text-gray-300 font-medium text-sm">Arjun_Sharma_Resume_2024.pdf</p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Last updated: Jan 15, 2024 · 245 KB</p>
-                          <div className="flex justify-center gap-3 mt-4">
-                            <button className="px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center gap-2">
-                              <Download className="w-4 h-4" /> Download
-                            </button>
-                            <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
-                              <Upload className="w-4 h-4" /> Replace
-                            </button>
-                          </div>
-                        </div>
-                        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                          <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                            <Target className="w-4 h-4 flex-shrink-0" />
-                            Your resume has been viewed by <strong>24 recruiters</strong> this month
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <BookOpen className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Projects
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        {[
-                          { name: 'AI Placement Predictor', tech: 'Python · TensorFlow · React', stars: 42 },
-                          { name: 'Campus Connect App', tech: 'React Native · Node.js · MongoDB', stars: 27 },
-                          { name: 'Smart Resume Parser', tech: 'NLP · FastAPI · PostgreSQL', stars: 18 },
-                        ].map((proj, i) => (
-                          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                            <div>
-                              <p className="font-medium text-gray-800 dark:text-gray-200 text-sm">{proj.name}</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{proj.tech}</p>
-                            </div>
-                            <div className="flex items-center gap-1 text-yellow-500 text-sm">
-                              <Star className="w-4 h-4 fill-yellow-400" />
-                              <span className="font-medium text-gray-700 dark:text-gray-300">{proj.stars}</span>
-                            </div>
-                          </div>
-                        ))}
-                        <button className="w-full mt-2 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 flex items-center justify-center gap-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 transition-all">
-                          <Plus className="w-4 h-4" /> Add Project
-                        </button>
-                      </CardContent>
-                    </Card>
+{(userRole === 'student' || userRole === 'alumni') && (
+  <TabsContent value="skills" className="mb-8">  {/* 👈 Added bottom margin */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Skills */}
+      {profile.skills && (
+        <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Code className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Skills & Proficiency
+              </CardTitle>
+              {editMode && (
+                <button className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+                  <Plus className="w-4 h-4" /> Add Skill
+                </button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {profile.skills.map((skill, i) => (
+              <div key={i}>
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="w-5 h-5 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center text-gray-500 dark:text-gray-400">
+                      {skillCategoryIcon(skill.category)}
+                    </span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{skill.name}</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">{skill.category}</span>
                   </div>
-                )}
+                  <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">{skill.level}%</span>
+                </div>
+                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${skill.level}%` }}
+                    transition={{ delay: i * 0.05, duration: 0.6 }}
+                  />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+                {/* Resume & Documents */}
+{isStudent && (
+  <div className="space-y-6">
+    <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center gap-2">
+          <FileText className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Resume / CV
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center hover:border-gray-400 dark:hover:border-gray-600 transition-colors group cursor-pointer">
+          <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-200 dark:group-hover:bg-gray-600 transition-colors">
+            <Upload className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 font-medium text-sm">Arjun_Sharma_Resume_2024.pdf</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Last updated: Jan 15, 2024 · 245 KB</p>
+          <div className="flex justify-center gap-3 mt-4">
+            <button className="px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center gap-2">
+              <Download className="w-4 h-4" /> Download
+            </button>
+            <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+              <Upload className="w-4 h-4" /> Replace
+            </button>
+          </div>
+        </div>
+        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <p className="text-xs text-blue-700 dark:text-blue-300 flex items-center gap-2">
+            <Target className="w-4 h-4 flex-shrink-0" />
+            Your resume has been viewed by <strong>24 recruiters</strong> this month
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* Projects Card - added mb-8 for bottom spacing */}
+    <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700 mb-8">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Projects
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {[
+          { name: 'AI Placement Predictor', tech: 'Python · TensorFlow · React', stars: 42 },
+          { name: 'Campus Connect App', tech: 'React Native · Node.js · MongoDB', stars: 27 },
+          { name: 'Smart Resume Parser', tech: 'NLP · FastAPI · PostgreSQL', stars: 18 },
+        ].map((proj, i) => (
+          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+            <div>
+              <p className="font-medium text-gray-800 dark:text-gray-200 text-sm">{proj.name}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{proj.tech}</p>
+            </div>
+            <div className="flex items-center gap-1 text-yellow-500 text-sm">
+              <Star className="w-4 h-4 fill-yellow-400" />
+              <span className="font-medium text-gray-700 dark:text-gray-300">{proj.stars}</span>
+            </div>
+          </div>
+        ))}
+        <button className="w-full mt-2 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 flex items-center justify-center gap-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 transition-all">
+          <Plus className="w-4 h-4" /> Add Project
+        </button>
+      </CardContent>
+    </Card>
+  </div>
+)}
               </div>
             </TabsContent>
           )}
@@ -792,39 +796,39 @@ export const ProfilePage = ({ userRole = 'student' }) => {
                 </Card>
 
                 {/* Certificates */}
-                <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Shield className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Certificates
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {studentProfile.certificates.map((cert, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                      >
-                        <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 flex items-center justify-center flex-shrink-0">
-                          <Award className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm truncate">{cert.name}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{cert.issuer} · {cert.date}</p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500 font-mono mt-0.5">{cert.credentialId}</p>
-                        </div>
-                        <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0">
-                          <Download className="w-4 h-4" />
-                        </button>
-                      </motion.div>
-                    ))}
-                    <button className="w-full mt-2 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 flex items-center justify-center gap-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-gray-400 dark:hover:border-gray-500 transition-all">
-                      <Plus className="w-4 h-4" /> Add Certificate
-                    </button>
-                  </CardContent>
-                </Card>
+<Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700 mb-8">
+  <CardHeader className="pb-3">
+    <CardTitle className="text-base flex items-center gap-2">
+      <Shield className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Certificates
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-3">
+    {studentProfile.certificates.map((cert, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, x: 10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: i * 0.1 }}
+        className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+      >
+        <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 flex items-center justify-center flex-shrink-0">
+          <Award className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm truncate">{cert.name}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{cert.issuer} · {cert.date}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 font-mono mt-0.5">{cert.credentialId}</p>
+        </div>
+        <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0">
+          <Download className="w-4 h-4" />
+        </button>
+      </motion.div>
+    ))}
+    <button className="w-full mt-2 py-3 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 flex items-center justify-center gap-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-gray-400 dark:hover:border-gray-500 transition-all">
+      <Plus className="w-4 h-4" /> Add Certificate
+    </button>
+  </CardContent>
+</Card>
               </div>
             </TabsContent>
           )}

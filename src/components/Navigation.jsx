@@ -56,23 +56,28 @@ export const Navigation = ({ currentPage, onNavigate, onLogout, userRole = 'stud
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
+          {/* Logo - responsive */}
           <button
             onClick={() => onNavigate('home')}
-            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+            className="flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition-opacity"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-600 to-gray-800 dark:from-gray-500 dark:to-gray-700 rounded-xl flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div className="flex flex-col items-start">
-              <span className="text-lg font-bold text-gray-800 dark:text-gray-100 leading-none">CCSconnect</span>
-              <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${getRoleBadgeColor()}`}>
+              <span className="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-100 leading-tight sm:leading-none">
+                CCSconnect
+              </span>
+              {/* Role badge - hidden on mobile, visible on sm+ */}
+              <span className={`hidden sm:inline-block text-xs px-1.5 py-0.5 rounded font-medium ${getRoleBadgeColor()}`}>
                 {roleDisplayName[userRole]}
               </span>
             </div>
           </button>
 
+          {/* Desktop navigation - hidden on mobile */}
           <div className="hidden md:flex items-center space-x-1">
             {navigationItems.map(item => {
               const Icon = item.icon;
@@ -81,7 +86,7 @@ export const Navigation = ({ currentPage, onNavigate, onLogout, userRole = 'stud
                 <motion.button
                   key={item.id}
                   onClick={() => onNavigate(item.id)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-lg transition-all duration-200 ${
                     isActive
                       ? 'bg-gray-800 dark:bg-gray-700 text-white'
                       : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -96,20 +101,21 @@ export const Navigation = ({ currentPage, onNavigate, onLogout, userRole = 'stud
             })}
           </div>
 
-          <div className="flex items-center space-x-3">
+          {/* Right section: notifications + avatar + mobile menu button */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <NotificationDropdown userRole={userRole} />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-gray-800 dark:bg-gray-700 text-white font-semibold text-sm">
+                <Button variant="ghost" className="relative h-8 w-8 sm:h-10 sm:w-10 rounded-full p-0">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
+                    <AvatarFallback className="bg-gray-800 dark:bg-gray-700 text-white font-semibold text-xs sm:text-sm">
                       {roleInitials[userRole]}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-60 mt-2 mr-4 dark:bg-gray-800 dark:border-gray-700" align="end">
+              <DropdownMenuContent className="w-56 sm:w-60 mt-2 mr-2 sm:mr-4 dark:bg-gray-800 dark:border-gray-700" align="end">
                 <div className="p-3 border-b border-gray-100 dark:border-gray-700">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gray-800 dark:bg-gray-700 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
@@ -142,7 +148,7 @@ export const Navigation = ({ currentPage, onNavigate, onLogout, userRole = 'stud
             </DropdownMenu>
 
             <motion.button
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -152,14 +158,21 @@ export const Navigation = ({ currentPage, onNavigate, onLogout, userRole = 'stud
           </div>
         </div>
 
+        {/* Mobile menu - scrollable if many items */}
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700"
+            className="md:hidden mt-3 pb-3 border-t border-gray-200 dark:border-gray-700 max-h-[calc(100vh-80px)] overflow-y-auto"
           >
-            <div className="flex flex-col space-y-1 pt-4">
+            <div className="flex flex-col space-y-1 pt-3">
+              {/* Show role badge at top of mobile menu for context */}
+              <div className="px-4 py-2 mb-1">
+                <span className={`inline-block text-xs px-2 py-1 rounded-full font-medium ${getRoleBadgeColor()}`}>
+                  {roleDisplayName[userRole]}
+                </span>
+              </div>
               {navigationItems.map(item => {
                 const Icon = item.icon;
                 const isActive = currentPage === item.id;

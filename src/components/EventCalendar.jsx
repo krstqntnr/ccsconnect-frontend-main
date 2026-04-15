@@ -43,7 +43,7 @@ export function EventCalendar() {
     const days = [];
     const today = new Date();
 
-    for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`} className="h-24"></div>);
+    for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`} className="min-h-[70px] sm:h-24"></div>);
 
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
@@ -53,18 +53,18 @@ export function EventCalendar() {
 
       days.push(
         <motion.div key={day} whileHover={{ scale: 1.02 }} onClick={() => setSelectedDate(date)}
-          className={`h-24 p-2 border border-gray-100 dark:border-gray-700 cursor-pointer relative overflow-hidden ${
+          className={`min-h-[70px] sm:h-24 p-1 sm:p-2 border border-gray-100 dark:border-gray-700 cursor-pointer relative overflow-hidden ${
             isToday ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800' : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50'
           } ${isSelected ? 'ring-2 ring-orange-500 dark:ring-orange-400' : ''}`}>
-          <div className={`text-sm font-medium ${isToday ? 'text-orange-600 dark:text-orange-400' : 'text-gray-800 dark:text-gray-200'}`}>{day}</div>
-          <div className="mt-1 space-y-1">
+          <div className={`text-xs sm:text-sm font-medium ${isToday ? 'text-orange-600 dark:text-orange-400' : 'text-gray-800 dark:text-gray-200'}`}>{day}</div>
+          <div className="mt-1 space-y-0.5 sm:space-y-1">
             {dayEvents.slice(0, 2).map((event, index) => (
               <motion.div key={event.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}
-                className={`text-xs p-1 rounded truncate ${eventTypes[event.type].color}`}>
-                {eventTypes[event.type].icon} {event.title}
+                className={`text-[10px] sm:text-xs p-0.5 sm:p-1 rounded truncate ${eventTypes[event.type].color}`}>
+                <span className="hidden sm:inline">{eventTypes[event.type].icon} </span>{event.title.length > 12 ? event.title.slice(0,10)+'…' : event.title}
               </motion.div>
             ))}
-            {dayEvents.length > 2 && <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">+{dayEvents.length - 2} more</div>}
+            {dayEvents.length > 2 && <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium">+{dayEvents.length - 2}</div>}
           </div>
         </motion.div>
       );
@@ -75,18 +75,19 @@ export function EventCalendar() {
   const upcomingEvents = events.filter(event => event.date >= new Date() && (filterType === 'all' || event.type === filterType)).sort((a, b) => a.date.getTime() - b.date.getTime()).slice(0, 5);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      {/* Header - responsive */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
-            <Calendar className="w-8 h-8 text-orange-500 dark:text-orange-400" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
+            <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 dark:text-orange-400" />
             Event Calendar
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Stay updated with interviews, deadlines, and campus events</p>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">Stay updated with interviews, deadlines, and campus events</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger className="w-40 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200">
+            <SelectTrigger className="w-full sm:w-40 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue />
             </SelectTrigger>
@@ -101,11 +102,11 @@ export function EventCalendar() {
           </Select>
           <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
             <DialogTrigger asChild>
-              <Button className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700">
+              <Button className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700 w-full sm:w-auto">
                 <Plus className="w-4 h-4 mr-2" />Add Event
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md dark:bg-gray-800 dark:border-gray-700">
+            <DialogContent className="max-w-[95vw] sm:max-w-md dark:bg-gray-800 dark:border-gray-700">
               <DialogHeader>
                 <DialogTitle className="dark:text-gray-100">Create New Event</DialogTitle>
               </DialogHeader>
@@ -138,59 +139,64 @@ export function EventCalendar() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-3">
-          <Card className="overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 dark:from-gray-700 dark:to-gray-800 text-white">
+      {/* Calendar and Sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
+        {/* Calendar - scrollable on mobile if needed */}
+        <div className="lg:col-span-3 overflow-x-auto">
+          <Card className="overflow-hidden dark:bg-gray-800 dark:border-gray-700 min-w-[280px]">
+            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 dark:from-gray-700 dark:to-gray-800 text-white py-3 sm:py-4">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-xl dark:text-gray-100">{currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</CardTitle>
+                <CardTitle className="text-lg sm:text-xl dark:text-gray-100">
+                  {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </CardTitle>
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" onClick={() => navigateMonth('prev')} className="text-white hover:bg-white hover:bg-opacity-20">
+                  <Button variant="ghost" size="sm" onClick={() => navigateMonth('prev')} className="text-white hover:bg-white hover:bg-opacity-20 h-8 w-8 p-0">
                     <ChevronLeft className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => navigateMonth('next')} className="text-white hover:bg-white hover:bg-opacity-20">
+                  <Button variant="ghost" size="sm" onClick={() => navigateMonth('next')} className="text-white hover:bg-white hover:bg-opacity-20 h-8 w-8 p-0">
                     <ChevronRight className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="p-0">
+              {/* Weekday headers - responsive text */}
               <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-700">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                  <div key={day} className="p-3 text-center text-sm font-medium text-gray-600 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600 last:border-r-0">
+                  <div key={day} className="p-2 sm:p-3 text-center text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600 last:border-r-0">
                     {day}
                   </div>
                 ))}
               </div>
+              {/* Calendar grid - responsive cell height */}
               <div className="grid grid-cols-7">{renderCalendarGrid()}</div>
             </CardContent>
           </Card>
         </div>
 
+        {/* Right sidebar - stacks below calendar on mobile */}
         <div className="space-y-6">
           <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 dark:text-gray-100">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 dark:text-gray-100 text-base sm:text-lg">
                 <Bell className="w-5 h-5 text-orange-500 dark:text-orange-400" />
                 Upcoming Events
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4">
               <AnimatePresence>
                 {upcomingEvents.map((event, index) => (
                   <motion.div key={event.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ delay: index * 0.1 }}
-                    className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+                    className="p-2 sm:p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm text-gray-800 dark:text-gray-200 line-clamp-1">{event.title}</h4>
-                        <div className="flex items-center gap-1 mt-1 text-xs text-gray-600 dark:text-gray-400">
-                          <Clock className="w-3 h-3" />{event.date.toLocaleDateString()} • {event.time}
-                        </div>
-                        <div className="flex items-center gap-1 mt-1 text-xs text-gray-600 dark:text-gray-400">
-                          <MapPin className="w-3 h-3" />{event.location}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-xs sm:text-sm text-gray-800 dark:text-gray-200 truncate">{event.title}</h4>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-gray-600 dark:text-gray-400">
+                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{event.date.toLocaleDateString()} • {event.time}</span>
+                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{event.location}</span>
                         </div>
                       </div>
-                      <Badge variant="secondary" className={`text-xs ${eventTypes[event.type].color}`}>
+                      <Badge variant="secondary" className={`text-xs shrink-0 ${eventTypes[event.type].color}`}>
                         {eventTypes[event.type].icon}
                       </Badge>
                     </div>
@@ -198,19 +204,19 @@ export function EventCalendar() {
                 ))}
               </AnimatePresence>
               {upcomingEvents.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>No upcoming events</p>
+                <div className="text-center py-6 sm:py-8 text-gray-500 dark:text-gray-400">
+                  <Calendar className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 opacity-50" />
+                  <p className="text-sm">No upcoming events</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="dark:text-gray-100">This Month</CardTitle>
+            <CardHeader className="pb-3">
+              <CardTitle className="dark:text-gray-100 text-base sm:text-lg">This Month</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600 dark:text-gray-400">Total Events</span>
                 <span className="font-semibold text-lg text-gray-800 dark:text-gray-200">{events.length}</span>
@@ -228,12 +234,13 @@ export function EventCalendar() {
         </div>
       </div>
 
+      {/* Selected Date Events - responsive */}
       <AnimatePresence>
         {selectedDate && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="mt-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="mt-6 sm:mt-8">
             <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <CardTitle className="dark:text-gray-100">
+              <CardHeader className="pb-3">
+                <CardTitle className="dark:text-gray-100 text-base sm:text-lg">
                   Events on {selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </CardTitle>
               </CardHeader>
@@ -241,18 +248,18 @@ export function EventCalendar() {
                 <div className="space-y-4">
                   {getEventsForDate(selectedDate).map((event) => (
                     <motion.div key={event.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                      className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                      <div className="flex items-start justify-between">
+                      className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-gray-800 dark:text-gray-200">{event.title}</h4>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{event.description}</p>
-                          <div className="flex items-center gap-4 mt-3 text-sm text-gray-600 dark:text-gray-400">
+                          <h4 className="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base">{event.title}</h4>
+                          <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1">{event.description}</p>
+                          <div className="flex flex-wrap items-center gap-3 mt-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             <div className="flex items-center gap-1"><Clock className="w-4 h-4" />{event.time} ({event.duration})</div>
                             <div className="flex items-center gap-1"><MapPin className="w-4 h-4" />{event.location}</div>
                             {event.attendees && <div className="flex items-center gap-1"><Users className="w-4 h-4" />{event.attendees} attendees</div>}
                           </div>
                         </div>
-                        <Badge variant="secondary" className={`${eventTypes[event.type].color}`}>
+                        <Badge variant="secondary" className={`w-fit ${eventTypes[event.type].color}`}>
                           {eventTypes[event.type].icon} {event.type.replace('-', ' ')}
                         </Badge>
                       </div>

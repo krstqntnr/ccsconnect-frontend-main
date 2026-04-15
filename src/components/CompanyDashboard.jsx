@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Progress } from './ui/progress';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useSharedData } from '../contexts/SharedDataContext';
 
 const companyId = 'company-001';
@@ -126,34 +126,34 @@ export const CompanyDashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
       {/* Header */}
-      <motion.div className="mb-10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 bg-gray-800 dark:bg-gray-700 rounded-xl flex items-center justify-center">
-            <Briefcase className="w-6 h-6 text-white" />
+      <motion.div className="mb-6 sm:mb-10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <div className="flex items-center gap-2 sm:gap-3 mb-2">
+          <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-800 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+            <Briefcase className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Company Dashboard</h1>
-            <p className="text-gray-500 dark:text-gray-400">TechCorp Solutions — Recruiter Portal</p>
+            <h1 className="text-xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">Company Dashboard</h1>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">TechCorp Solutions — Recruiter Portal</p>
           </div>
         </div>
       </motion.div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {companyStats.map((stat, i) => {
           const Icon = stat.icon;
           return (
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
               <Card className="border-0 shadow-md hover:shadow-lg transition-shadow dark:bg-gray-800 dark:border-gray-700">
-                <CardContent className="p-5">
+                <CardContent className="p-3 sm:p-5">
                   <div className="flex items-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl ${stat.bg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon className={`w-5 h-5 ${stat.color}`} />
+                    <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-xl ${stat.bg} flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stat.value}</div>
+                      <div className="text-lg sm:text-2xl font-bold text-gray-800 dark:text-gray-100">{stat.value}</div>
                       <div className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</div>
                     </div>
                   </div>
@@ -164,38 +164,41 @@ export const CompanyDashboard = () => {
         })}
       </div>
 
+      {/* Tabs - horizontally scrollable on mobile */}
       <Tabs defaultValue="interns" className="space-y-6">
-        <TabsList className="bg-gray-100 dark:bg-gray-800 rounded-xl p-1 h-auto flex-wrap gap-1">
-          <TabsTrigger value="interns" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700">
-            <UserCheck className="w-4 h-4 mr-2" /> Interns ({myAssignments.length})
-          </TabsTrigger>
-          <TabsTrigger value="attendance" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700">
-            <ClipboardList className="w-4 h-4 mr-2" /> Log Attendance
-          </TabsTrigger>
-          <TabsTrigger value="jobs" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700">
-            <Briefcase className="w-4 h-4 mr-2" /> Job Posts
-          </TabsTrigger>
-          <TabsTrigger value="applications" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700">
-            <FileText className="w-4 h-4 mr-2" /> Applications
-          </TabsTrigger>
-          <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700">
-            <Bell className="w-4 h-4 mr-2" /> Notices
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2">
+          <TabsList className="bg-gray-100 dark:bg-gray-800 rounded-xl p-1 h-auto inline-flex min-w-max gap-1">
+            <TabsTrigger value="interns" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700 whitespace-nowrap">
+              <UserCheck className="w-4 h-4 mr-2" /> Interns ({myAssignments.length})
+            </TabsTrigger>
+            <TabsTrigger value="attendance" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700 whitespace-nowrap">
+              <ClipboardList className="w-4 h-4 mr-2" /> Log Attendance
+            </TabsTrigger>
+            <TabsTrigger value="jobs" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700 whitespace-nowrap">
+              <Briefcase className="w-4 h-4 mr-2" /> Job Posts
+            </TabsTrigger>
+            <TabsTrigger value="applications" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700 whitespace-nowrap">
+              <FileText className="w-4 h-4 mr-2" /> Applications
+            </TabsTrigger>
+            <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-gray-800 data-[state=active]:text-white dark:data-[state=active]:bg-gray-700 whitespace-nowrap">
+              <Bell className="w-4 h-4 mr-2" /> Notices
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-        {/* ── INTERNS TAB ─────────────────────────────────────────────────── */}
+        {/* ── INTERNS TAB (responsive) ── */}
         <TabsContent value="interns" className="space-y-4">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <div>
-              <h2 className="font-semibold text-gray-800 dark:text-gray-200">Assigned Interns</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">One student is assigned per job post. Track their progress and attendance here.</p>
+              <h2 className="font-semibold text-gray-800 dark:text-gray-200 text-base sm:text-lg">Assigned Interns</h2>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">One student is assigned per job post. Track their progress and attendance here.</p>
             </div>
           </div>
 
           {myAssignments.length === 0 ? (
             <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-              <CardContent className="py-16 text-center text-gray-500 dark:text-gray-400">
-                <Users className="w-12 h-12 mx-auto mb-4 opacity-30" />
+              <CardContent className="py-12 sm:py-16 text-center text-gray-500 dark:text-gray-400">
+                <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-4 opacity-30" />
                 <p>No interns assigned yet</p>
               </CardContent>
             </Card>
@@ -211,41 +214,41 @@ export const CompanyDashboard = () => {
                 return (
                   <motion.div key={a.studentId} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>
                     <Card className="border-0 shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-                      <CardContent className="p-5">
+                      <CardContent className="p-4 sm:p-5">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-gray-800 dark:bg-gray-700 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 dark:bg-gray-700 rounded-xl flex items-center justify-center text-white font-bold text-sm sm:text-base flex-shrink-0">
                               {a.studentName.split(' ').map(n => n[0]).join('')}
                             </div>
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="font-semibold text-gray-800 dark:text-gray-200">{a.studentName}</h3>
+                                <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base">{a.studentName}</h3>
                                 <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">{a.rollNumber}</span>
                                 <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 text-xs">Active</Badge>
                               </div>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">{a.jobTitle}</p>
+                              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{a.jobTitle}</p>
                               <p className="text-xs text-gray-400 dark:text-gray-500">{a.department} · {a.year} · {a.stipend}</p>
                             </div>
                           </div>
 
-                          <div className="flex gap-4 text-center flex-shrink-0">
+                          <div className="flex gap-4 text-center flex-shrink-0 justify-around sm:justify-end">
                             <div>
-                              <div className="text-xl font-bold text-gray-800 dark:text-gray-200">{totalHours}</div>
-                              <div className="text-xs text-gray-400 dark:text-gray-500">hrs logged</div>
+                              <div className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">{totalHours}</div>
+                              <div className="text-xs text-gray-400 dark:text-gray-500">hrs</div>
                             </div>
                             <div>
-                              <div className="text-xl font-bold text-gray-800 dark:text-gray-200">{rate}%</div>
-                              <div className="text-xs text-gray-400 dark:text-gray-500">attendance</div>
+                              <div className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">{rate}%</div>
+                              <div className="text-xs text-gray-400 dark:text-gray-500">att</div>
                             </div>
                             <div>
-                              <div className="text-xl font-bold text-gray-800 dark:text-gray-200">{progressPct}%</div>
-                              <div className="text-xs text-gray-400 dark:text-gray-500">progress</div>
+                              <div className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">{progressPct}%</div>
+                              <div className="text-xs text-gray-400 dark:text-gray-500">prog</div>
                             </div>
                           </div>
 
                           <button
                             onClick={() => setExpandedStudent(isExpanded ? null : a.studentId)}
-                            className="text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                            className="text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors self-end sm:self-center"
                           >
                             {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                           </button>
@@ -278,14 +281,14 @@ export const CompanyDashboard = () => {
                             ) : (
                               <div className="space-y-2">
                                 {logs.map(log => (
-                                  <div key={log.id} className="flex items-center justify-between text-sm p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                    <span className="text-gray-500 dark:text-gray-400 w-28 flex-shrink-0">{log.date}</span>
+                                  <div key={log.id} className="flex flex-col sm:flex-row sm:items-center justify-between text-sm p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg gap-2">
+                                    <span className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm w-full sm:w-28 flex-shrink-0">{log.date}</span>
                                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium w-20 text-center flex-shrink-0 ${statusColor[log.status]}`}>{log.status}</span>
-                                    <span className="text-gray-600 dark:text-gray-300 flex-1 mx-3 truncate">{log.task}</span>
-                                    <span className="text-gray-500 dark:text-gray-400 flex-shrink-0 flex items-center gap-1">
+                                    <span className="text-gray-600 dark:text-gray-300 flex-1 text-xs sm:text-sm break-all">{log.task}</span>
+                                    <span className="text-gray-500 dark:text-gray-400 flex-shrink-0 flex items-center gap-1 text-xs">
                                       <Timer className="w-3 h-3" />{log.hoursWorked}h
                                     </span>
-                                    <button onClick={() => deleteAttendance(log.id)} className="ml-2 text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors">
+                                    <button onClick={() => deleteAttendance(log.id)} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors">
                                       <Trash2 className="w-3.5 h-3.5" />
                                     </button>
                                   </div>
@@ -303,17 +306,17 @@ export const CompanyDashboard = () => {
           )}
         </TabsContent>
 
-        {/* ── ATTENDANCE TAB ───────────────────────────────────────────────── */}
+        {/* ── ATTENDANCE TAB (responsive) ── */}
         <TabsContent value="attendance" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             <Card className="border-0 shadow-md lg:col-span-2 dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 px-4 sm:px-6">
                 <CardTitle className="text-base flex items-center gap-2">
                   <ClipboardList className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Log Attendance
                 </CardTitle>
-                <CardDescription className="dark:text-gray-400">Record daily attendance and work hours for your interns</CardDescription>
+                <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">Record daily attendance and work hours</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 px-4 sm:px-6">
                 <div>
                   <Label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1.5 block">Intern *</Label>
                   <Select value={attendanceForm.studentId} onValueChange={v => setAttendanceForm(f => ({ ...f, studentId: v }))}>
@@ -340,7 +343,7 @@ export const CompanyDashboard = () => {
                       <button
                         key={s}
                         onClick={() => setAttendanceForm(f => ({ ...f, status: s, hoursWorked: s === 'absent' ? '0' : s === 'half-day' ? '4' : '8' }))}
-                        className={`py-2 rounded-lg text-sm font-medium border-2 transition-all ${
+                        className={`py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium border-2 transition-all ${
                           attendanceForm.status === s
                             ? s === 'present' ? 'border-green-500 bg-green-50 text-green-700 dark:border-green-400 dark:bg-green-900/30 dark:text-green-300'
                               : s === 'half-day' ? 'border-yellow-500 bg-yellow-50 text-yellow-700 dark:border-yellow-400 dark:bg-yellow-900/30 dark:text-yellow-300'
@@ -373,7 +376,7 @@ export const CompanyDashboard = () => {
                       value={attendanceForm.task}
                       onChange={e => setAttendanceForm(f => ({ ...f, task: e.target.value }))}
                       rows={3}
-                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
                     />
                   </div>
                 )}
@@ -384,36 +387,40 @@ export const CompanyDashboard = () => {
             </Card>
 
             <Card className="border-0 shadow-md lg:col-span-3 dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 px-4 sm:px-6">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Recent Logs
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-4 sm:px-6">
                 <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
                   {attendance
                     .filter(r => myAssignments.some(a => a.studentId === r.studentId))
                     .sort((a, b) => b.date.localeCompare(a.date))
                     .slice(0, 20)
                     .map(log => (
-                      <div key={log.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                        <div className="w-2 h-2 rounded-full flex-shrink-0 mt-0.5"
-                          style={{ backgroundColor: log.status === 'present' ? '#22c55e' : log.status === 'absent' ? '#ef4444' : '#eab308' }}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">{log.studentName}</span>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${statusColor[log.status]}`}>{log.status}</span>
+                      <div key={log.id} className="flex flex-col sm:flex-row sm:items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: log.status === 'present' ? '#22c55e' : log.status === 'absent' ? '#ef4444' : '#eab308' }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-medium text-gray-800 dark:text-gray-200 text-xs sm:text-sm">{log.studentName}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${statusColor[log.status]}`}>{log.status}</span>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{log.task}</p>
                           </div>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{log.task}</p>
                         </div>
-                        <div className="text-right flex-shrink-0">
-                          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{log.hoursWorked}h</div>
-                          <div className="text-xs text-gray-400 dark:text-gray-500">{log.date}</div>
+                        <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
+                          <div className="text-right">
+                            <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{log.hoursWorked}h</div>
+                            <div className="text-xs text-gray-400 dark:text-gray-500">{log.date}</div>
+                          </div>
+                          <button onClick={() => deleteAttendance(log.id)} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors">
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
-                        <button onClick={() => deleteAttendance(log.id)} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors ml-1">
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
                       </div>
                     ))}
                 </div>
@@ -422,12 +429,12 @@ export const CompanyDashboard = () => {
           </div>
 
           <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-3 px-4 sm:px-6">
               <CardTitle className="text-base flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-gray-500 dark:text-gray-400" /> Intern Attendance Summary
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {myAssignments.map(a => {
                   const logs = attendance.filter(r => r.studentId === a.studentId);
@@ -438,7 +445,7 @@ export const CompanyDashboard = () => {
                   const rate = getAttendanceRate(a.studentId);
 
                   return (
-                    <div key={a.studentId} className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+                    <div key={a.studentId} className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 sm:p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="w-8 h-8 bg-gray-800 dark:bg-gray-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
                           {a.studentName.split(' ').map(n => n[0]).join('')}
@@ -475,20 +482,20 @@ export const CompanyDashboard = () => {
           </Card>
         </TabsContent>
 
-        {/* ── JOB POSTS TAB ───────────────────────────────────────────────── */}
+        {/* ── JOB POSTS TAB (responsive) ── */}
         <TabsContent value="jobs" className="space-y-4">
           <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <div className="flex items-center justify-between">
+            <CardHeader className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <CardTitle className="dark:text-gray-100">Job Posts</CardTitle>
-                  <CardDescription className="dark:text-gray-400">Each job post can have one assigned intern. One student per position.</CardDescription>
+                  <CardTitle className="dark:text-gray-100 text-lg sm:text-xl">Job Posts</CardTitle>
+                  <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">Each job post can have one assigned intern. One student per position.</CardDescription>
                 </div>
                 <Dialog open={isJobDialogOpen} onOpenChange={setIsJobDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"><Plus className="w-4 h-4 mr-2" />Post New Job</Button>
+                    <Button className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 w-full sm:w-auto"><Plus className="w-4 h-4 mr-2" />Post New Job</Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl dark:bg-gray-800 dark:border-gray-700">
+                  <DialogContent className="max-w-[95vw] sm:max-w-2xl dark:bg-gray-800 dark:border-gray-700">
                     <DialogHeader>
                       <DialogTitle className="dark:text-gray-100">Post New Job</DialogTitle>
                       <DialogDescription className="dark:text-gray-400">Fill in the details to create a new job posting</DialogDescription>
@@ -532,7 +539,7 @@ export const CompanyDashboard = () => {
                       </div>
                       <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                         <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                        <p className="text-sm text-blue-700 dark:text-blue-300">Only <strong>one student</strong> can be assigned per job post once hired.</p>
+                        <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">Only <strong>one student</strong> can be assigned per job post once hired.</p>
                       </div>
                     </div>
                     <DialogFooter>
@@ -543,44 +550,44 @@ export const CompanyDashboard = () => {
                 </Dialog>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               <div className="space-y-3">
                 {myJobPosts.map(job => {
                   const assignedStudent = myAssignments.find(a => a.studentId === job.assignedStudentId);
                   return (
-                    <div key={job.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
-                      <div className="flex items-start justify-between gap-4">
+                    <div key={job.id} className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <h3 className="font-semibold text-gray-800 dark:text-gray-200">{job.title}</h3>
-                            <Badge className={typeColor[job.type] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'}>{job.type}</Badge>
-                            <Badge className={statusColor[job.status] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'}>{job.status}</Badge>
+                            <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base">{job.title}</h3>
+                            <Badge className={`${typeColor[job.type] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'} text-xs`}>{job.type}</Badge>
+                            <Badge className={`${statusColor[job.status] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'} text-xs`}>{job.status}</Badge>
                           </div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{job.description}</p>
-                          <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2">{job.description}</p>
+                          <div className="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
                             {job.department && <span>📁 {job.department}</span>}
                             {job.location && <span>📍 {job.location}</span>}
-                            <span>⏳ Deadline: {job.deadline}</span>
+                            <span>⏳ {job.deadline}</span>
                             <span>👁 {job.views} views</span>
-                            <span>📄 {job.applications} applications</span>
+                            <span>📄 {job.applications} apps</span>
                           </div>
                         </div>
-                        <button onClick={() => setJobPosts(jobPosts.filter(j => j.id !== job.id))} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors flex-shrink-0">
+                        <button onClick={() => setJobPosts(jobPosts.filter(j => j.id !== job.id))} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors self-start">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
-                      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         {assignedStudent ? (
                           <div className="flex items-center gap-2">
                             <UserCheck className="w-4 h-4 text-green-600 dark:text-green-400" />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                            <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                               Assigned: <span className="font-semibold">{assignedStudent.studentName}</span>
                               <span className="text-gray-400 dark:text-gray-500 ml-1">({assignedStudent.rollNumber})</span>
                             </span>
                             <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 text-xs">Active Intern</Badge>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-yellow-600 dark:text-yellow-400">
                             <Clock className="w-4 h-4" /> No intern assigned yet
                           </div>
                         )}
@@ -593,14 +600,14 @@ export const CompanyDashboard = () => {
           </Card>
         </TabsContent>
 
-        {/* ── APPLICATIONS TAB ────────────────────────────────────────────── */}
+        {/* ── APPLICATIONS TAB (responsive) ── */}
         <TabsContent value="applications" className="space-y-4">
           <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="dark:text-gray-100">Application Review</CardTitle>
-              <CardDescription className="dark:text-gray-400">Review candidates. Each position accepts only one intern.</CardDescription>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="dark:text-gray-100 text-lg sm:text-xl">Application Review</CardTitle>
+              <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">Review candidates. Each position accepts only one intern.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               <div className="space-y-3">
                 {[
                   { id: 1, student: 'Alice Johnson', rollNo: '21CS044', position: 'Software Engineer Intern', score: 94, status: 'shortlisted', applied: '2024-01-20', cgpa: 9.1 },
@@ -608,26 +615,26 @@ export const CompanyDashboard = () => {
                   { id: 3, student: 'Carol Davis', rollNo: '21CS033', position: 'Software Engineer Intern', score: 91, status: 'pending', applied: '2024-01-17', cgpa: 8.6 },
                   { id: 4, student: 'David Kim', rollNo: '21EC019', position: 'Product Manager Intern', score: 87, status: 'interview', applied: '2024-01-22', cgpa: 8.4 },
                 ].map(app => (
-                  <div key={app.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+                  <div key={app.id} className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{app.student}</h3>
+                          <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base">{app.student}</h3>
                           <span className="text-xs text-gray-400 dark:text-gray-500">{app.rollNo}</span>
-                          <Badge className={statusColor[app.status] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'}>{app.status}</Badge>
+                          <Badge className={`${statusColor[app.status] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'} text-xs`}>{app.status}</Badge>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{app.position}</p>
-                        <div className="flex items-center gap-4 mt-2">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{app.position}</p>
+                        <div className="flex flex-wrap items-center gap-3 mt-2">
                           <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                            Match: <Progress value={app.score} className="w-20 h-1.5 inline-block" /><span className="font-medium text-gray-700 dark:text-gray-300">{app.score}%</span>
+                            Match: <Progress value={app.score} className="w-16 sm:w-20 h-1.5 inline-block" /><span className="font-medium text-gray-700 dark:text-gray-300">{app.score}%</span>
                           </div>
                           <span className="text-xs text-gray-500 dark:text-gray-400">CGPA: <strong>{app.cgpa}</strong></span>
                           <span className="text-xs text-gray-400 dark:text-gray-500">Applied: {app.applied}</span>
                         </div>
                       </div>
                       <div className="flex gap-2 flex-shrink-0">
-                        <Button size="sm" variant="outline" className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">View Resume</Button>
-                        <Button size="sm" className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600">Shortlist</Button>
+                        <Button size="sm" variant="outline" className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 text-xs sm:text-sm">View Resume</Button>
+                        <Button size="sm" className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-xs sm:text-sm">Shortlist</Button>
                       </div>
                     </div>
                   </div>
@@ -637,20 +644,20 @@ export const CompanyDashboard = () => {
           </Card>
         </TabsContent>
 
-        {/* ── NOTICES TAB ─────────────────────────────────────────────────── */}
+        {/* ── NOTICES TAB (responsive) ── */}
         <TabsContent value="notices" className="space-y-4">
           <Card className="border-0 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <div className="flex items-center justify-between">
+            <CardHeader className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <CardTitle className="dark:text-gray-100">Company Notices</CardTitle>
-                  <CardDescription className="dark:text-gray-400">Post announcements for students and interns</CardDescription>
+                  <CardTitle className="dark:text-gray-100 text-lg sm:text-xl">Company Notices</CardTitle>
+                  <CardDescription className="dark:text-gray-400 text-xs sm:text-sm">Post announcements for students and interns</CardDescription>
                 </div>
                 <Dialog open={isNoticeDialogOpen} onOpenChange={setIsNoticeDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"><Plus className="w-4 h-4 mr-2" />Post Notice</Button>
+                    <Button className="bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 w-full sm:w-auto"><Plus className="w-4 h-4 mr-2" />Post Notice</Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-xl dark:bg-gray-800 dark:border-gray-700">
+                  <DialogContent className="max-w-[95vw] sm:max-w-xl dark:bg-gray-800 dark:border-gray-700">
                     <DialogHeader>
                       <DialogTitle className="dark:text-gray-100">Post New Notice</DialogTitle>
                       <DialogDescription className="dark:text-gray-400">Share announcements with students</DialogDescription>
@@ -699,32 +706,32 @@ export const CompanyDashboard = () => {
                 </Dialog>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               <div className="space-y-3">
                 {notices.map(notice => (
-                  <div key={notice.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
-                    <div className="flex items-start justify-between">
+                  <div key={notice.id} className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <h3 className="font-semibold text-gray-800 dark:text-gray-200">{notice.title}</h3>
-                          <Badge className={typeColor[notice.type] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'}>{notice.type}</Badge>
+                          <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm sm:text-base">{notice.title}</h3>
+                          <Badge className={`${typeColor[notice.type] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'} text-xs`}>{notice.type}</Badge>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{notice.content}</p>
-                        <div className="flex gap-4 text-xs text-gray-400 dark:text-gray-500">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">{notice.content}</p>
+                        <div className="flex flex-wrap gap-3 text-xs text-gray-400 dark:text-gray-500">
                           <span>👥 {notice.targetAudience}</span>
                           <span>📅 {notice.posted}</span>
                         </div>
                       </div>
-                      <button onClick={() => setNotices(notices.filter(n => n.id !== notice.id))} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors ml-3">
+                      <button onClick={() => setNotices(notices.filter(n => n.id !== notice.id))} className="text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 transition-colors self-start">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
                 ))}
                 {notices.length === 0 && (
-                  <div className="text-center py-12 text-gray-400 dark:text-gray-500">
-                    <Bell className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                    <p>No notices posted yet</p>
+                  <div className="text-center py-8 sm:py-12 text-gray-400 dark:text-gray-500">
+                    <Bell className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm">No notices posted yet</p>
                   </div>
                 )}
               </div>
