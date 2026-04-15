@@ -79,6 +79,23 @@ const initialAssignments = [
     stipend: '₹45,000/mo',
     facultyId: 'fac-001',
   },
+  {
+  studentId: 'stu-005',
+  studentName: 'Neha Sharma',
+  rollNumber: '20CS078',
+  department: 'Computer Science',
+  year: 'Final Year',
+  jobId: 5,
+  jobTitle: 'Software Engineer Intern',
+  companyId: 'company-002',
+  companyName: 'Google',
+  startDate: '2023-06-01',
+  endDate: '2023-08-31',
+  status: 'completed',      // completed internship
+  totalRequiredHours: 480,
+  stipend: '₹80,000/mo',
+  facultyId: 'fac-001',
+},
 ];
 
 // Mock attendance (unchanged)
